@@ -4,5 +4,7 @@
 
 ### . source me
 
-    alias lein='docker run --rm -it -v `pwd`:/pwd -w /pwd clojure lein'
+    alias dockerme='docker run --rm -it -v `pwd`:/cwd -w /cwd'
+    alias lein='dockerme clojure:lein-alpine lein'
+    alias java='dockerme openjdk:jre-alpine java'
 
