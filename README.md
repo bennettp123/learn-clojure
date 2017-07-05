@@ -1,4 +1,4 @@
-# learning-clojure
+# learn-clojure
 
 this repo is probably completely uninteresting to anyone who isn't me
 
