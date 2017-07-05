@@ -26,23 +26,29 @@
                 echo "docker image bennetts-emacs is missing" >&2
                 return 1
             else
-                pushd . || return 1
+                pushd . >/dev/null || return 1
                 cd "${MY_CLOSURE_ALIAS_DIR}/emacs" \
                     && docker build -t bennetts-emacs .
                 RETVAL=$?
-                popd
+                popd >/dev/null
                 return $RETVAL
             fi
     }
 
+    alias emacsme='dockerme -v "${MY_CLOSURE_ALIAS_DIR}/emacs/.emacs.d:/root/.emacs.d" -v "${MY_CLOSURE_ALIAS_DIR}/emacs/.lein:/root/.lein" bennetts-emacs'
+
     # emacs environment
-    emacsme() {
+    emacs_build_and_run() {
+        if ! [ -z "$MY_CLOSURE_ALIAS_DIR" ]; then
+            if ! [ -e "$MY_CLOSURE_ALIAS_DIR/emacs/.emacs.d" ]; then cp -Rf "$MY_CLOSURE_ALIAS_DIR/emacs/default-.emacs.d" "$MY_CLOSURE_ALIAS_DIR/emacs/.emacs.d"; fi
+            if ! [ -e "$MY_CLOSURE_ALIAS_DIR/emacs/.lein" ]; then cp -Rf "$MY_CLOSURE_ALIAS_DIR/emacs/default-.lein" "$MY_CLOSURE_ALIAS_DIR/emacs/.lein"; fi
+        fi
         if ! docker inspect bennetts-emacs >/dev/null 2>&1; then
-            build_emacs && dockerme -v "${MY_CLOSURE_ALIAS_DIR}/emacs":/root bennetts-emacs "$@"
+            build_emacs && emacsme "$@"
         else
-            dockerme bennetts-emacs "$@"
+            emacsme "$@"
         fi
     }
 
-    alias emacs='emacsme emacs'
+    alias emacs='emacs_build_and_run emacs'
 
