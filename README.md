@@ -48,4 +48,5 @@ quit: C-x C-c == Control + x, then Control + c
 Alterative for VIM?:
 http://mybuddymichael.com/writings/writing-clojure-with-vim-in-2013.html
 
+Excercises here: [chapter2-excercises](chapter2-excercises)/
 
